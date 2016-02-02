@@ -81,7 +81,13 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
         return false;
       }
 
-      Listings.update(listing)
+      var id = $stateParams.listingId;
+      var listing = {
+        name: $scope.name, 
+        code: $scope.code, 
+        address: $scope.address
+      }
+      Listings.update(id, listing)
               .then(function(response) {
                 $state.go('listings.list', {successMessage: 'Listing succesfully updated!'});
               }, function(error) {
@@ -94,10 +100,11 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
        */
     };
 
-    $scope.remove = function() {
+    $scope.remove = function(listing) {
       $scope.error = null;
-
-      Listings.remove(listing)
+      //var listing = $scope.listing;
+      var id = $stateParams.listingId;
+      Listings.delete(id)
               .then(function(response) {
                 $state.go('listings.list', {successMessage: 'Listing succesfully removed!'});
               }, function(error) {
